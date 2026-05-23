@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hermes OpenClaw Synergy Platform</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient-grid" aria-hidden="true"></div>
+    <div class="app-shell">
+      <aside class="side-rail" aria-label="Platform navigation">
+        <a class="brand" href="#overview" aria-label="Hermes OpenClaw overview">
+          <span class="brand-mark">H/O</span>
+          <span>
+            <strong>Hermes OpenClaw</strong>
+            <small>Synergy Platform</small>
+          </span>
+        </a>
+        <nav class="rail-nav">
+          <a href="#overview" class="is-active" data-nav="overview">
+            <span class="nav-icon" aria-hidden="true">01</span>
+            Overview
+          </a>
+          <a href="#routing" data-nav="routing">
+            <span class="nav-icon" aria-hidden="true">02</span>
+            Routing
+          </a>
+          <a href="#architecture" data-nav="architecture">
+            <span class="nav-icon" aria-hidden="true">03</span>
+            Runtime
+          </a>
+          <a href="#skills" data-nav="skills">
+            <span class="nav-icon" aria-hidden="true">04</span>
+            Skills
+          </a>
+          <a href="#security" data-nav="security">
+            <span class="nav-icon" aria-hidden="true">05</span>
+            Security
+          </a>
+          <a href="#verifier" data-nav="verifier">
+            <span class="nav-icon" aria-hidden="true">06</span>
+            Verifier
+          </a>
+        </nav>
+        <div class="rail-status">
+          <span class="pulse"></span>
+          <span>Recursive synthesis loop active</span>
+        </div>
+      </aside>
+
+      <main>
+        <section class="hero" id="overview">
+          <div class="hero-copy">
+            <h1>Autonomous symbiosis framework for adaptive agents and rigorous logic.</h1>
+            <p>
+              Hermes serves as the metacognitive executive layer. OpenClaw becomes the
+              bare-metal actuator layer. The bus between them turns intent into local,
+              verified execution.
+            </p>
+            <div class="hero-actions" aria-label="Primary actions">
+              <button class="primary-action" data-run-synthesis>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+                Run synthesis
+              </button>
+              <button class="secondary-action" data-focus-verifier>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3l8 4v5c0 5-3.4 8.8-8 9-4.6-.2-8-4-8-9V7l8-4z"></path>
+                  <path d="M8.8 12.2l2.1 2.1 4.5-5"></path>
+                </svg>
+                Inspect verifier
+              </button>
+            </div>
+          </div>
+
+          <div class="synergy-core" aria-label="Hermes OpenClaw synthesis core">
+            <div class="core-ring ring-one"></div>
+            <div class="core-ring ring-two"></div>
+            <div class="core-ring ring-three"></div>
+            <div class="core-orbit hermes-orbit">
+              <span>Hermes</span>
+            </div>
+            <div class="core-orbit openclaw-orbit">
+              <span>OpenClaw</span>
+            </div>
+            <div class="core-center">
+              <strong id="coreScore">99.3%</strong>
+              <span>truthful synthesis</span>
+            </div>
+            <div class="flow-line flow-left"></div>
+            <div class="flow-line flow-right"></div>
+          </div>
+
+          <div class="hero-metrics" aria-label="System health metrics">
+            <article>
+              <span>Loop health</span>
+              <strong id="loopHealth">Optimal</strong>
+            </article>
+            <article>
+              <span>Verifier lock</span>
+              <strong id="verifierLock">Locked</strong>
+            </article>
+            <article>
+              <span>Drift detected</span>
+              <strong id="driftMetric">0.00%</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="workbench" id="routing">
+          <div class="section-heading">
+            <h2>Agentic orchestration workbench</h2>
+            <p>Compose an intent, route it through the cognitive engine, and watch the logic layer validate every handoff.</p>
+          </div>
+
+          <div class="workbench-grid">
+            <section class="command-panel" aria-labelledby="mission-title">
+              <div class="panel-title">
+                <h3 id="mission-title">Mission composer</h3>
+                <span id="missionState">ready</span>
+              </div>
+              <label for="missionInput">Intent payload</label>
+              <textarea id="missionInput" rows="5">Design a self-learning market-intelligence workflow that extracts signal, verifies claims, generates reusable skills, and schedules deterministic follow-up tasks.</textarea>
+              <div class="controls-row">
+                <label>
+                  Autonomy
+                  <input id="autonomyRange" type="range" min="35" max="98" value="82" />
+                </label>
+                <label>
+                  Rigor
+                  <input id="rigorRange" type="range" min="45" max="100" value="91" />
+                </label>
+              </div>
+              <button class="wide-action" data-run-synthesis>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 12h12"></path>
+                  <path d="M12 6l6 6-6 6"></path>
+                </svg>
+                Route through synthesis core
+              </button>
+            </section>
+
+            <section class="reactor-panel" aria-label="Synthesis reactor">
+              <div class="reactor-header">
+                <h3>Synthesis reactor</h3>
+                <span id="cycleCounter">Cycle 1248</span>
+              </div>
+              <div class="pipeline">
+                <button class="pipeline-node is-live" data-stage="intent">
+                  <span>Intent recognition</span>
+                  <strong>HEL</strong>
+                </button>
+                <button class="pipeline-node" data-stage="reasoning">
+                  <span>DAG compilation</span>
+                  <strong>HEL</strong>
+                </button>
+                <button class="pipeline-node" data-stage="constraints">
+                  <span>Skill translation</span>
+                  <strong>CIB</strong>
+                </button>
+                <button class="pipeline-node" data-stage="verified">
+                  <span>Atomic actuation</span>
+                  <strong>OAL</strong>
+                </button>
+              </div>
+              <div class="stage-readout" id="stageReadout">
+                Hermes Executive Layer parses intent against Honcho Theory of Mind memory and produces a constrained task graph.
+              </div>
+            </section>
+
+            <section class="routing-panel" aria-label="Multi-agent routing table">
+              <div class="panel-title">
+                <h3>Multi-agent routing</h3>
+                <span>4 agents</span>
+              </div>
+              <div class="agent-list" id="agentList"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="architecture-zone" id="architecture">
+          <div class="section-heading">
+            <h2>Dual-engine runtime architecture</h2>
+            <p>System 2 decides, System 1 drives. The runtime is intentionally asymmetric so strategic cognition never shares the same blast radius as local execution.</p>
+          </div>
+
+          <div class="architecture-stack" aria-label="Hermes OpenClaw layered runtime">
+            <article class="runtime-layer hel-layer">
+              <span>Hermes Executive Layer</span>
+              <h3>Metacognitive executive</h3>
+              <p>Honcho Theory of Mind memory, DAG routing, ephemeral sub-agent spawning, intent validation, and self-evolving typed Python skills.</p>
+            </article>
+            <article class="runtime-layer cib-layer">
+              <span>Cognitive Intermediary Bus</span>
+              <h3>Translation and memory bridge</h3>
+              <p>Milvus/Chroma cross-sync, SQLite/Redis episodic log ingestion, dynamic YAML frontmatter, and SKILL.md wrapping for OpenClaw execution.</p>
+            </article>
+            <article class="runtime-layer oal-layer">
+              <span>OpenClaw Actuation Layer</span>
+              <h3>Bare-metal actuator</h3>
+              <p>Local workspace gateway, operating system hooks, browser automation, HEARTBEAT.md proactivity, and WSL2/Docker isolated execution.</p>
+            </article>
+          </div>
+
+          <div class="lifecycle-board" aria-label="Integration lifecycle">
+            <article>
+              <span>01</span>
+              <h3>Intent filtration</h3>
+              <p>HEL maps natural language to user state, preferences, identity tier, and explicit constraints.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Reasoning and compilation</h3>
+              <p>Missing capability paths become tested Python functions and reusable Hermes Skills.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Atomic actuation</h3>
+              <p>OAL receives sanitized tool calls, tokens, file scopes, and local gateway instructions.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <h3>Loop feedback</h3>
+              <p>Raw outputs return through CIB for validation, embedding sync, and refinement decisions.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="operating-system" id="skills">
+          <div class="section-heading">
+            <h2>Self-learning operating layer</h2>
+            <p>Validated patterns become skills, skills become deterministic execution, and every checkpoint can roll back without losing the learning.</p>
+          </div>
+
+          <div class="ops-grid">
+            <article class="logic-card hermes-card">
+              <div class="logic-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3c-3.9 0-7 2.7-7 6.1 0 2.6 1.8 4.8 4.4 5.7L9 21l4.2-5.4H14c3.9 0 7-2.7 7-6.1S17.9 3 14 3h-2z"></path>
+                  <path d="M8 9h8M8 12h5"></path>
+                </svg>
+              </div>
+              <h3>HEL skill compiler</h3>
+              <p>Generates clean, typed Python with docstrings, tests it, and stores it as a native Hermes capability.</p>
+            </article>
+            <article class="logic-card openclaw-card">
+              <div class="logic-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z"></path>
+                  <path d="M8 12h8M12 8v8"></path>
+                </svg>
+              </div>
+              <h3>CIB skill translator</h3>
+              <p>Wraps Hermes code into OpenClaw-compliant SKILL.md files with YAML frontmatter and atomic execution contracts.</p>
+            </article>
+            <article class="logic-card verifier-card">
+              <div class="logic-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3l8 4v5c0 5-3.4 8.8-8 9-4.6-.2-8-4-8-9V7l8-4z"></path>
+                  <path d="M8.5 12l2.4 2.5 4.8-5.2"></path>
+                </svg>
+              </div>
+              <h3>OAL execution daemon</h3>
+              <p>Runs background ticks, gateway calls, browser automation, filesystem edits, and terminal execution inside allowlisted sandboxes.</p>
+            </article>
+          </div>
+
+          <div class="skills-ledger">
+            <div class="panel-title">
+              <h3>Skill registry and validation</h3>
+              <button class="ghost-button" data-generate-skill>Generate skill</button>
+            </div>
+            <div class="skill-table" id="skillTable"></div>
+          </div>
+        </section>
+
+        <section class="security-zone" id="security">
+          <div class="section-heading">
+            <h2>Security and isolation matrix</h2>
+            <p>OpenClaw gets local power, but not strategic authority. Hermes owns identity, goal integrity, and escalation; containers own blast-radius control.</p>
+          </div>
+
+          <div class="matrix-table" role="table" aria-label="Security and isolation matrix">
+            <div class="matrix-row matrix-head" role="row">
+              <span role="columnheader">Vector</span>
+              <span role="columnheader">Risk profile</span>
+              <span role="columnheader">Mitigating architecture</span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span role="cell">Ingress gateways</span>
+              <span role="cell">Shared gateway passwords and broad message routing</span>
+              <span role="cell">Hermes identity stack with ephemeral pairing codes, rate limits, and Admin/Regular tiers</span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span role="cell">Tool execution</span>
+              <span role="cell">Community plugins, arbitrary scripts, and aggressive file access</span>
+              <span role="cell">NemoClaw-style WSL2/Docker sandbox with unprivileged execution and strict read/write allowlists</span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span role="cell">Prompt injection</span>
+              <span role="cell">Third-party web data hijacks global goal state</span>
+              <span role="cell">OAL receives only sanitized atomic instructions; HEL keeps strategic intent private</span>
+            </div>
+          </div>
+
+          <div class="performance-grid">
+            <article>
+              <span>Latency minimization</span>
+              <strong>Local I/O first</strong>
+              <p>Simple browser, file, shell, and webhook work routes to OpenClaw with a lean local model endpoint.</p>
+            </article>
+            <article>
+              <span>Context efficiency</span>
+              <strong>Structured snippets</strong>
+              <p>OAL abstracts noisy execution logs and returns polished state deltas to Hermes.</p>
+            </article>
+            <article>
+              <span>Hardware posture</span>
+              <strong>RTX / DGX ready</strong>
+              <p>The architecture keeps heavy reasoning separate from local automation loops.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="verifier-zone" id="verifier">
+          <div class="section-heading">
+            <h2>Verifier and rollback command center</h2>
+            <p>Every action ships with evidence, confidence, constraints, scheduled execution, and a reversible checkpoint.</p>
+          </div>
+
+          <div class="verifier-grid">
+            <div class="evidence-panel">
+              <div class="panel-title">
+                <h3>Ground-truth ledger</h3>
+                <span id="evidenceScore">99.1%</span>
+              </div>
+              <div class="ledger-list" id="ledgerList"></div>
+            </div>
+
+            <div class="checkpoint-panel">
+              <div class="panel-title">
+                <h3>Checkpoint timeline</h3>
+                <button class="ghost-button" data-rollback>Rollback</button>
+              </div>
+              <div class="timeline" id="timeline"></div>
+            </div>
+
+            <div class="source-board">
+              <div class="panel-title">
+                <h3>Source architecture board</h3>
+                <span>attached visuals</span>
+              </div>
+              <div class="source-strip">
+                <button class="source-thumb is-selected" data-source="./assets/synergistic_architecture.png">
+                  <img src="./assets/synergistic_architecture.png" alt="Original OpenClaw and Hermes orchestration diagram" />
+                </button>
+                <button class="source-thumb" data-source="./assets/synaptic_bridge.png">
+                  <img src="./assets/synaptic_bridge.png" alt="Synaptic Bridge synergy architecture poster" />
+                </button>
+                <button class="source-thumb" data-source="./assets/hermes_openclaw_synergy.jpeg">
+                  <img src="./assets/hermes_openclaw_synergy.jpeg" alt="Hermes OpenClaw synergy visual" />
+                </button>
+              </div>
+              <img class="source-preview" id="sourcePreview" src="./assets/synergistic_architecture.png" alt="Selected source architecture visual" />
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Synthesis complete. Skill candidate validated.</div>
+    <script src="./main.js"></script>
+  </body>
+</html>
