@@ -1,8 +1,8 @@
 const agents = [
-  { name: "HEL Honcho Model", role: "Theory of Mind intent state", load: 91, color: "gold" },
-  { name: "HEL DAG Router", role: "Ephemeral sub-agent graph", load: 86, color: "gold" },
-  { name: "CIB Skill Bridge", role: "Python to SKILL.md translation", load: 88, color: "cyan" },
-  { name: "OAL Local Gateway", role: "Sandboxed OS and browser actuation", load: 94, color: "violet" },
+  { name: "HEL Honcho Model", role: "Theory of Mind intent state", load: 91 },
+  { name: "HEL DAG Router", role: "Ephemeral sub-agent graph", load: 86 },
+  { name: "CIB Skill Bridge", role: "Python to SKILL.md translation", load: 88 },
+  { name: "OAL Local Gateway", role: "Sandboxed OS and browser actuation", load: 94 },
 ];
 
 const skills = [
@@ -26,6 +26,15 @@ const timeline = [
   { name: "Gateway package", time: "now", state: "OAL armed" },
 ];
 
+const missionPresets = {
+  research:
+    "Run a research operations loop that gathers market signals, strips prompt-injection content, scores evidence quality, creates reusable synthesis skills, and returns a verified executive brief.",
+  security:
+    "Audit a local automation workspace for risky plugins, broad filesystem access, stale gateway tokens, missing sandbox boundaries, and unverified browser outputs.",
+  automation:
+    "Create a HEARTBEAT.md automation plan that checks workspace drift every 15 minutes, routes simple I/O locally, and escalates ambiguous decisions back to Hermes.",
+};
+
 const stageText = {
   intent:
     "Hermes Executive Layer parses intent against Honcho Theory of Mind memory and produces a constrained task graph.",
@@ -37,40 +46,68 @@ const stageText = {
     "OpenClaw Actuation Layer executes local OS, browser, filesystem, and HEARTBEAT.md tasks inside the sandbox.",
 };
 
-const agentList = document.querySelector("#agentList");
-const skillTable = document.querySelector("#skillTable");
-const ledgerList = document.querySelector("#ledgerList");
-const timelineEl = document.querySelector("#timeline");
-const toast = document.querySelector("#toast");
-const coreScore = document.querySelector("#coreScore");
-const loopHealth = document.querySelector("#loopHealth");
-const verifierLock = document.querySelector("#verifierLock");
-const driftMetric = document.querySelector("#driftMetric");
-const missionState = document.querySelector("#missionState");
-const cycleCounter = document.querySelector("#cycleCounter");
-const evidenceScore = document.querySelector("#evidenceScore");
-const stageReadout = document.querySelector("#stageReadout");
-const missionInput = document.querySelector("#missionInput");
-const autonomyRange = document.querySelector("#autonomyRange");
-const rigorRange = document.querySelector("#rigorRange");
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+const elements = {
+  agentList: $("#agentList"),
+  skillTable: $("#skillTable"),
+  ledgerList: $("#ledgerList"),
+  timeline: $("#timeline"),
+  toast: $("#toast"),
+  coreScore: $("#coreScore"),
+  loopHealth: $("#loopHealth"),
+  verifierLock: $("#verifierLock"),
+  driftMetric: $("#driftMetric"),
+  missionState: $("#missionState"),
+  cycleCounter: $("#cycleCounter"),
+  evidenceScore: $("#evidenceScore"),
+  stageReadout: $("#stageReadout"),
+  missionInput: $("#missionInput"),
+  autonomyRange: $("#autonomyRange"),
+  rigorRange: $("#rigorRange"),
+  runOutput: $("#runOutput"),
+  planStatus: $("#planStatus"),
+  riskState: $("#riskState"),
+  riskMeter: $("#riskMeter"),
+};
 
 let cycle = 1248;
 let generatedSkillCount = 0;
+let latestPlan = null;
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function wordCount(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
 
 function meter(width) {
-  return `<div class="meter" aria-hidden="true"><i style="width:${width}%"></i></div>`;
+  return `<div class="meter" aria-hidden="true"><i style="width:${clamp(width, 0, 100)}%"></i></div>`;
 }
 
 function renderAgents() {
-  agentList.innerHTML = agents
+  if (!elements.agentList) return;
+  elements.agentList.innerHTML = agents
     .map(
       (agent) => `
         <article class="agent-row">
           <div class="agent-top">
-            <strong>${agent.name}</strong>
+            <strong>${escapeHtml(agent.name)}</strong>
             <span>${agent.load}%</span>
           </div>
-          <span>${agent.role}</span>
+          <span>${escapeHtml(agent.role)}</span>
           ${meter(agent.load)}
         </article>
       `,
@@ -79,13 +116,14 @@ function renderAgents() {
 }
 
 function renderSkills() {
-  skillTable.innerHTML = skills
+  if (!elements.skillTable) return;
+  elements.skillTable.innerHTML = skills
     .map(
       (skill) => `
         <article class="skill-row">
           <div class="skill-top">
-            <strong>${skill.name}</strong>
-            <span>${skill.status}</span>
+            <strong>${escapeHtml(skill.name)}</strong>
+            <span>${escapeHtml(skill.status)}</span>
           </div>
           ${meter(skill.confidence)}
         </article>
@@ -95,15 +133,16 @@ function renderSkills() {
 }
 
 function renderLedger() {
-  ledgerList.innerHTML = ledger
+  if (!elements.ledgerList) return;
+  elements.ledgerList.innerHTML = ledger
     .map(
       (item) => `
         <article class="ledger-row">
           <div class="ledger-top">
-            <strong>${item.name}</strong>
+            <strong>${escapeHtml(item.name)}</strong>
             <span>${item.score}%</span>
           </div>
-          <span>${item.note}</span>
+          <span>${escapeHtml(item.note)}</span>
           ${meter(item.score)}
         </article>
       `,
@@ -112,15 +151,16 @@ function renderLedger() {
 }
 
 function renderTimeline() {
-  timelineEl.innerHTML = timeline
+  if (!elements.timeline) return;
+  elements.timeline.innerHTML = timeline
     .map(
       (item) => `
         <article class="time-row">
           <div class="time-top">
-            <strong>${item.name}</strong>
-            <span>${item.time}</span>
+            <strong>${escapeHtml(item.name)}</strong>
+            <span>${escapeHtml(item.time)}</span>
           </div>
-          <span>${item.state}</span>
+          <span>${escapeHtml(item.state)}</span>
         </article>
       `,
     )
@@ -128,46 +168,123 @@ function renderTimeline() {
 }
 
 function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add("is-visible");
+  if (!elements.toast) return;
+  elements.toast.textContent = message;
+  elements.toast.classList.add("is-visible");
   window.clearTimeout(showToast.timeout);
-  showToast.timeout = window.setTimeout(() => toast.classList.remove("is-visible"), 2600);
+  showToast.timeout = window.setTimeout(() => elements.toast.classList.remove("is-visible"), 2800);
+}
+
+function getMissionState() {
+  const mission = elements.missionInput?.value.trim() || "";
+  const autonomy = Number(elements.autonomyRange?.value || 0);
+  const rigor = Number(elements.rigorRange?.value || 0);
+  const complexity = Math.min(12, wordCount(mission) / 12);
+  const synthesis = Math.min(99.9, 82 + autonomy * 0.08 + rigor * 0.08 - complexity * 0.22);
+  const drift = Math.max(0, (100 - rigor) * 0.012 + complexity * 0.01);
+  return { mission, autonomy, rigor, complexity, synthesis, drift };
 }
 
 function computeScores() {
-  const autonomy = Number(autonomyRange.value);
-  const rigor = Number(rigorRange.value);
-  const missionComplexity = Math.min(12, missionInput.value.trim().split(/\s+/).length / 12);
-  const synthesis = Math.min(99.9, 82 + autonomy * 0.08 + rigor * 0.08 - missionComplexity * 0.22);
-  const drift = Math.max(0, (100 - rigor) * 0.012 + missionComplexity * 0.01).toFixed(2);
-  coreScore.textContent = `${synthesis.toFixed(1)}%`;
-  driftMetric.textContent = `${drift}%`;
-  evidenceScore.textContent = `${Math.min(99.8, 88 + rigor * 0.12).toFixed(1)}%`;
-  loopHealth.textContent = synthesis > 96 ? "Optimal" : "Tuning";
-  verifierLock.textContent = rigor > 82 ? "Locked" : "Reviewing";
+  const state = getMissionState();
+  if (elements.coreScore) elements.coreScore.textContent = `${state.synthesis.toFixed(1)}%`;
+  if (elements.driftMetric) elements.driftMetric.textContent = `${state.drift.toFixed(2)}%`;
+  if (elements.evidenceScore) {
+    elements.evidenceScore.textContent = `${Math.min(99.8, 88 + state.rigor * 0.12).toFixed(1)}%`;
+  }
+  if (elements.loopHealth) elements.loopHealth.textContent = state.synthesis > 96 ? "Optimal" : "Tuning";
+  if (elements.verifierLock) elements.verifierLock.textContent = state.rigor > 82 ? "Locked" : "Reviewing";
+  localStorage.setItem("hermes-openclaw-mission", state.mission);
+}
+
+function validatePlan() {
+  const state = getMissionState();
+  const checks = [
+    {
+      name: "Intent specificity",
+      passed: wordCount(state.mission) >= 12,
+      fix: "Add clear task objective, target artifact, and success criteria.",
+    },
+    {
+      name: "Sandbox posture",
+      passed: getPolicyScore().risk <= 35,
+      fix: "Re-enable isolation, allowlists, pairing codes, and goal shielding.",
+    },
+    {
+      name: "Rigor threshold",
+      passed: state.rigor >= 80,
+      fix: "Raise rigor before sending local execution to OpenClaw.",
+    },
+    {
+      name: "Autonomy balance",
+      passed: state.autonomy <= 94 || state.rigor >= 94,
+      fix: "High autonomy should be paired with high verifier rigor.",
+    },
+  ];
+  const passed = checks.filter((check) => check.passed).length;
+  const status = passed === checks.length ? "validated" : `${passed}/${checks.length} checks`;
+  latestPlan = buildPlan(status, checks);
+  updatePlanOutput(latestPlan);
+  if (elements.planStatus) elements.planStatus.textContent = status;
+  showToast(passed === checks.length ? "Execution envelope validated." : "Validation found items to tighten.");
+  return latestPlan;
+}
+
+function buildPlan(status = "draft", checks = []) {
+  const state = getMissionState();
+  return {
+    runtime: "Hermes-OpenClaw Synergistic Agentic Runtime",
+    cycle,
+    status,
+    mission: state.mission,
+    hel: {
+      memory: "Honcho Theory of Mind",
+      routing: "DAG with restricted ephemeral sub-agents",
+      autonomy: state.autonomy,
+    },
+    cib: {
+      translation: "typed Python -> SKILL.md + YAML frontmatter",
+      memoryBridge: "SQLite/Redis deltas -> vector sync",
+    },
+    oal: {
+      actuator: "local workspace gateway",
+      sandbox: "WSL2/Docker allowlisted execution",
+      heartbeat: "15 minute proactivity tick",
+    },
+    verifier: {
+      rigor: state.rigor,
+      synthesisScore: Number(state.synthesis.toFixed(1)),
+      drift: Number(state.drift.toFixed(2)),
+      checks,
+    },
+  };
+}
+
+function updatePlanOutput(plan) {
+  if (!elements.runOutput) return;
+  elements.runOutput.textContent = JSON.stringify(plan, null, 2);
 }
 
 function runSynthesis() {
-  missionState.textContent = "synthesizing";
+  if (elements.missionState) elements.missionState.textContent = "synthesizing";
   cycle += 1;
-  cycleCounter.textContent = `Cycle ${cycle}`;
+  if (elements.cycleCounter) elements.cycleCounter.textContent = `Cycle ${cycle}`;
   agents.forEach((agent, index) => {
     const delta = index % 2 === 0 ? 3 : -2;
-    agent.load = Math.max(72, Math.min(99, agent.load + delta));
+    agent.load = clamp(agent.load + delta, 72, 99);
   });
   skills[1].confidence = Math.min(100, skills[1].confidence + 1);
-  timeline.unshift({
-    name: "Synthesis run",
-    time: "now",
-    state: "verified",
-  });
+  timeline.unshift({ name: "Synthesis run", time: "now", state: "verified" });
   if (timeline.length > 5) timeline.pop();
   computeScores();
+  latestPlan = buildPlan("routed");
+  updatePlanOutput(latestPlan);
+  if (elements.planStatus) elements.planStatus.textContent = "routed";
   renderAgents();
   renderSkills();
   renderTimeline();
   window.setTimeout(() => {
-    missionState.textContent = "verified";
+    if (elements.missionState) elements.missionState.textContent = "verified";
     showToast("Synthesis complete. Verifier packaged the action with rollback state.");
   }, 360);
 }
@@ -186,56 +303,116 @@ function generateSkill() {
 }
 
 function rollback() {
-  timeline.unshift({
-    name: "Container rollback",
-    time: "now",
-    state: "sandbox restored",
-  });
+  timeline.unshift({ name: "Container rollback", time: "now", state: "sandbox restored" });
   if (timeline.length > 5) timeline.pop();
   renderTimeline();
   showToast("Rollback complete. OAL sandbox restored to the last verified checkpoint.");
 }
 
-document.querySelectorAll("[data-run-synthesis]").forEach((button) => {
-  button.addEventListener("click", runSynthesis);
-});
+function getPolicyScore() {
+  const enabled = $$("[data-policy]").filter((input) => input.checked).length;
+  const total = $$("[data-policy]").length || 1;
+  const risk = Math.round((1 - enabled / total) * 100);
+  return { enabled, total, risk };
+}
 
-document.querySelector("[data-generate-skill]").addEventListener("click", generateSkill);
-document.querySelector("[data-rollback]").addEventListener("click", rollback);
+function updatePolicyRisk() {
+  const { risk } = getPolicyScore();
+  if (elements.riskMeter) elements.riskMeter.style.width = `${Math.max(12, risk)}%`;
+  if (!elements.riskState) return;
+  if (risk <= 25) elements.riskState.textContent = "low risk";
+  else if (risk <= 60) elements.riskState.textContent = "review required";
+  else elements.riskState.textContent = "high risk";
+}
 
-document.querySelector("[data-focus-verifier]").addEventListener("click", () => {
-  document.querySelector("#verifier").scrollIntoView({ behavior: "smooth" });
-});
+function exportRun() {
+  const plan = latestPlan || validatePlan();
+  navigator.clipboard
+    ?.writeText(JSON.stringify(plan, null, 2))
+    .then(() => showToast("Execution JSON copied to clipboard."))
+    .catch(() => showToast("Execution JSON is visible in the console panel."));
+}
 
-document.querySelectorAll(".pipeline-node").forEach((node) => {
-  node.addEventListener("click", () => {
-    document.querySelectorAll(".pipeline-node").forEach((item) => item.classList.remove("is-live"));
-    node.classList.add("is-live");
-    stageReadout.textContent = stageText[node.dataset.stage];
+function activateNavForSection(id) {
+  $$("[data-nav]").forEach((link) => {
+    link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`);
   });
-});
+}
 
-document.querySelectorAll(".source-thumb").forEach((thumb) => {
-  thumb.addEventListener("click", () => {
-    document.querySelectorAll(".source-thumb").forEach((item) => item.classList.remove("is-selected"));
-    thumb.classList.add("is-selected");
-    document.querySelector("#sourcePreview").src = thumb.dataset.source;
+function initNavObserver() {
+  const sections = $$("main section[id]");
+  if (!("IntersectionObserver" in window) || sections.length === 0) return;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target?.id) activateNavForSection(visible.target.id);
+    },
+    { threshold: [0.28, 0.45, 0.62] },
+  );
+  sections.forEach((section) => observer.observe(section));
+}
+
+function bindEvents() {
+  $$("[data-run-synthesis]").forEach((button) => button.addEventListener("click", runSynthesis));
+  $("[data-generate-skill]")?.addEventListener("click", generateSkill);
+  $("[data-rollback]")?.addEventListener("click", rollback);
+  $("[data-validate-plan]")?.addEventListener("click", validatePlan);
+  $$("[data-export-run]").forEach((button) => button.addEventListener("click", exportRun));
+
+  $("[data-focus-verifier]")?.addEventListener("click", () => {
+    $("#verifier")?.scrollIntoView({ behavior: "smooth" });
   });
-});
 
-document.querySelectorAll(".rail-nav a").forEach((link) => {
-  link.addEventListener("click", () => {
-    document.querySelectorAll(".rail-nav a").forEach((item) => item.classList.remove("is-active"));
-    link.classList.add("is-active");
+  $$(".pipeline-node").forEach((node) => {
+    node.addEventListener("click", () => {
+      $$(".pipeline-node").forEach((item) => item.classList.remove("is-live"));
+      node.classList.add("is-live");
+      if (elements.stageReadout) elements.stageReadout.textContent = stageText[node.dataset.stage];
+    });
   });
-});
 
-[autonomyRange, rigorRange, missionInput].forEach((control) => {
-  control.addEventListener("input", computeScores);
-});
+  $$(".source-thumb").forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      $$(".source-thumb").forEach((item) => item.classList.remove("is-selected"));
+      thumb.classList.add("is-selected");
+      const preview = $("#sourcePreview");
+      if (preview) preview.src = thumb.dataset.source;
+    });
+  });
 
-renderAgents();
-renderSkills();
-renderLedger();
-renderTimeline();
-computeScores();
+  $$("[data-preset]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!elements.missionInput) return;
+      elements.missionInput.value = missionPresets[button.dataset.preset] || elements.missionInput.value;
+      computeScores();
+      latestPlan = buildPlan("preset loaded");
+      updatePlanOutput(latestPlan);
+      showToast("Mission preset loaded.");
+    });
+  });
+
+  $$("[data-policy]").forEach((input) => input.addEventListener("change", updatePolicyRisk));
+
+  [elements.autonomyRange, elements.rigorRange, elements.missionInput].forEach((control) => {
+    control?.addEventListener("input", computeScores);
+  });
+}
+
+function init() {
+  const savedMission = localStorage.getItem("hermes-openclaw-mission");
+  if (savedMission && elements.missionInput) elements.missionInput.value = savedMission;
+  bindEvents();
+  renderAgents();
+  renderSkills();
+  renderLedger();
+  renderTimeline();
+  computeScores();
+  updatePolicyRisk();
+  latestPlan = buildPlan("ready");
+  updatePlanOutput(latestPlan);
+  initNavObserver();
+}
+
+init();

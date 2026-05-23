@@ -3,10 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interactive Hermes-OpenClaw Synergistic Agentic Runtime cockpit for HEL, CIB, OAL, sandboxing, skills, and verifier workflows."
+    />
     <title>Hermes OpenClaw Synergy Platform</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#routing">Skip to mission workbench</a>
     <div class="ambient-grid" aria-hidden="true"></div>
     <div class="app-shell">
       <aside class="side-rail" aria-label="Platform navigation">
@@ -52,6 +57,11 @@
       <main>
         <section class="hero" id="overview">
           <div class="hero-copy">
+            <div class="system-strip" aria-label="Runtime status">
+              <span>Runtime blueprint v1.1</span>
+              <span>HEL + CIB + OAL</span>
+              <span id="identityTier">Admin identity tier</span>
+            </div>
             <h1>Autonomous symbiosis framework for adaptive agents and rigorous logic.</h1>
             <p>
               Hermes serves as the metacognitive executive layer. OpenClaw becomes the
@@ -71,6 +81,14 @@
                   <path d="M8.8 12.2l2.1 2.1 4.5-5"></path>
                 </svg>
                 Inspect verifier
+              </button>
+              <button class="secondary-action" data-export-run>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12"></path>
+                  <path d="M7 10l5 5 5-5"></path>
+                  <path d="M5 21h14"></path>
+                </svg>
+                Export run
               </button>
             </div>
           </div>
@@ -123,6 +141,11 @@
               </div>
               <label for="missionInput">Intent payload</label>
               <textarea id="missionInput" rows="5">Design a self-learning market-intelligence workflow that extracts signal, verifies claims, generates reusable skills, and schedules deterministic follow-up tasks.</textarea>
+              <div class="preset-row" aria-label="Mission presets">
+                <button type="button" data-preset="research">Research ops</button>
+                <button type="button" data-preset="security">Security audit</button>
+                <button type="button" data-preset="automation">Automation loop</button>
+              </div>
               <div class="controls-row">
                 <label>
                   Autonomy
@@ -139,6 +162,12 @@
                   <path d="M12 6l6 6-6 6"></path>
                 </svg>
                 Route through synthesis core
+              </button>
+              <button class="wide-action alt-action" data-validate-plan>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5"></path>
+                </svg>
+                Validate execution envelope
               </button>
             </section>
 
@@ -177,6 +206,17 @@
               </div>
               <div class="agent-list" id="agentList"></div>
             </section>
+          </div>
+
+          <div class="output-console" aria-label="Structured execution plan console">
+            <div class="panel-title">
+              <h3>Structured execution plan</h3>
+              <span id="planStatus">awaiting route</span>
+            </div>
+            <pre id="runOutput">{
+  "state": "ready",
+  "next": "Run synthesis to generate HEL -> CIB -> OAL execution JSON"
+}</pre>
           </div>
         </section>
 
@@ -321,6 +361,20 @@
               <strong>RTX / DGX ready</strong>
               <p>The architecture keeps heavy reasoning separate from local automation loops.</p>
             </article>
+          </div>
+
+          <div class="policy-board" aria-label="Sandbox policy simulator">
+            <div class="panel-title">
+              <h3>Sandbox policy simulator</h3>
+              <span id="riskState">low risk</span>
+            </div>
+            <div class="policy-controls">
+              <label><input type="checkbox" data-policy="identity" checked /> Ephemeral pairing codes</label>
+              <label><input type="checkbox" data-policy="sandbox" checked /> WSL2/Docker isolation</label>
+              <label><input type="checkbox" data-policy="allowlist" checked /> Filesystem allowlists</label>
+              <label><input type="checkbox" data-policy="prompt" checked /> Strategic goal shielding</label>
+            </div>
+            <div class="policy-meter" aria-hidden="true"><i id="riskMeter"></i></div>
           </div>
         </section>
 

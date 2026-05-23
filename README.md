@@ -12,6 +12,8 @@ The platform models an asymmetric agent runtime:
 - **Cognitive Intermediary Bus (CIB)** translates strategic intent into executable artifacts.
 - **OpenClaw Actuation Layer (OAL)** performs local OS, browser, file, terminal, webhook, and automation work.
 - **Verifier and rollback controls** keep execution accountable, constrained, and reversible.
+- **Sandbox policy simulator** shows how identity, isolation, filesystem allowlists, and goal shielding affect risk.
+- **Structured execution console** emits a readable HEL -> CIB -> OAL execution envelope.
 
 The guiding principle is:
 
@@ -68,6 +70,27 @@ autonomous-symbiosis-platform/
    - Security
    - Verifier
 
+## Quality Check
+
+Run the bundled static QA check from the repository root:
+
+```bash
+node qa-static-check.mjs
+```
+
+The check verifies:
+
+- Required files exist.
+- Required visual assets exist.
+- Core HTML sections and controls are present.
+- `main.js` passes JavaScript syntax validation.
+
+Expected output:
+
+```text
+Static QA passed: files, assets, HTML markers, and JavaScript syntax are valid.
+```
+
 ## How To Use The Interface
 
 ### 1. Overview
@@ -83,6 +106,7 @@ Use:
 
 - **Run synthesis** to simulate a runtime pass.
 - **Inspect verifier** to jump to the verifier and rollback command center.
+- **Export run** to copy or expose the latest structured execution JSON.
 
 ### 2. Routing Workbench
 
@@ -91,10 +115,12 @@ The routing section contains the mission composer and execution pipeline.
 You can:
 
 1. Edit the mission payload.
-2. Adjust autonomy.
-3. Adjust rigor.
-4. Route the mission through the synthesis core.
-5. Click pipeline stages to inspect what each stage does.
+2. Load a preset mission for research operations, security auditing, or automation loops.
+3. Adjust autonomy.
+4. Adjust rigor.
+5. Route the mission through the synthesis core.
+6. Validate the execution envelope.
+7. Click pipeline stages to inspect what each stage does.
 
 The four modeled stages are:
 
@@ -102,6 +128,16 @@ The four modeled stages are:
 - **DAG compilation** through HEL.
 - **Skill translation** through CIB.
 - **Atomic actuation** through OAL.
+
+The structured execution console produces JSON containing:
+
+- Runtime name.
+- Cycle number.
+- Mission text.
+- HEL routing and memory settings.
+- CIB translation and memory bridge details.
+- OAL gateway, sandbox, and heartbeat settings.
+- Verifier scores, drift, and validation checks.
 
 ### 3. Runtime Architecture
 
@@ -164,6 +200,15 @@ It covers:
 - Prompt injection risk.
 
 The key security idea is that OpenClaw receives only sanitized atomic execution instructions. It does not receive the full strategic user goal. Hermes keeps the goal state, identity model, and high-level policy authority.
+
+The **Sandbox policy simulator** lets you toggle:
+
+- Ephemeral pairing codes.
+- WSL2/Docker isolation.
+- Filesystem allowlists.
+- Strategic goal shielding.
+
+The risk state updates immediately as controls change.
 
 ### 6. Verifier Command Center
 
@@ -270,6 +315,46 @@ Provides local interactivity:
 - Rollback simulation.
 - Source visual switching.
 - Navigation active states.
+- Mission presets.
+- Execution-envelope validation.
+- Structured JSON export.
+- Sandbox policy risk scoring.
+- Local mission persistence.
+- HTML escaping for rendered dynamic data.
+
+### `qa-static-check.mjs`
+
+Provides dependency-free static quality checks:
+
+- Confirms files and assets are present.
+- Confirms core UI markers exist.
+- Runs JavaScript syntax validation.
+
+## UX and Interaction Inventory
+
+The current prototype includes these user-facing workflows:
+
+1. **Mission drafting:** edit or preset the mission payload.
+2. **Runtime tuning:** adjust autonomy and rigor sliders.
+3. **Synthesis routing:** simulate HEL -> CIB -> OAL execution.
+4. **Stage inspection:** click each pipeline stage to inspect runtime responsibilities.
+5. **Envelope validation:** check intent specificity, sandbox posture, rigor threshold, and autonomy balance.
+6. **Structured export:** produce and copy execution JSON.
+7. **Skill evolution:** generate SKILL.md candidates.
+8. **Sandbox policy simulation:** toggle defensive controls and observe risk.
+9. **Verifier rollback:** restore the last sandbox checkpoint.
+10. **Source review:** inspect the attached architecture visuals.
+
+## Error Handling and Safety Behavior
+
+The app avoids executing real local commands. Safety behavior is simulated but structured as if it were driving a production runtime:
+
+- Dynamic HTML rows are escaped before rendering.
+- Missing DOM elements are guarded with safe lookups.
+- Mission text persists in `localStorage`.
+- Clipboard export falls back to the visible console if browser permissions block copying.
+- Validation highlights weak execution envelopes before actuation.
+- Sandbox risk increases if defensive toggles are disabled.
 
 ## Publishing With GitHub Pages
 
@@ -314,4 +399,3 @@ This app is currently a polished framework prototype. A production runtime could
 ## Security Disclaimer
 
 The current app is a static prototype and does not execute local commands. Any production implementation that gives an agent filesystem, shell, browser, or OS access should use strict sandboxing, least-privilege permissions, allowlisted paths, auditable logs, and explicit user approval for dangerous operations.
-
