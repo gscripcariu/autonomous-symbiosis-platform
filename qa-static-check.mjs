@@ -5,6 +5,8 @@ const requiredFiles = [
   "styles.css",
   "main.js",
   "README.md",
+  "package.json",
+  ".nojekyll",
   "assets/synergistic_architecture.png",
   "assets/synaptic_bridge.png",
   "assets/hermes_openclaw_synergy.jpeg",
@@ -24,6 +26,8 @@ const requiredHtml = [
   "data-export-run",
   "data-heartbeat-toggle",
   "data-heartbeat-step",
+  "data-download-run",
+  "data-reset-runtime",
 ];
 
 async function assertFile(path) {

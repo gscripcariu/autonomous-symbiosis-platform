@@ -103,12 +103,37 @@ const defaultState = {
 };
 
 const storageKey = "hermes-openclaw-runtime-state-v2";
+const missionStorageKey = "hermes-openclaw-mission";
 let heartbeatTimer = null;
 let state = loadState();
 
+function safeReadStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeWriteStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    addEvent("error", "Storage", "Browser storage is unavailable; runtime persistence is disabled.");
+  }
+}
+
+function safeRemoveStorage(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Nothing to reset when browser storage is unavailable.
+  }
+}
+
 function loadState() {
   try {
-    const saved = JSON.parse(localStorage.getItem(storageKey));
+    const saved = JSON.parse(safeReadStorage(storageKey));
     if (!saved || typeof saved !== "object") return structuredClone(defaultState);
     return {
       ...structuredClone(defaultState),
@@ -121,7 +146,7 @@ function loadState() {
 }
 
 function saveState() {
-  localStorage.setItem(storageKey, JSON.stringify({ ...state, heartbeatRunning: false }));
+  safeWriteStorage(storageKey, JSON.stringify({ ...state, heartbeatRunning: false }));
 }
 
 function escapeHtml(value) {
@@ -336,7 +361,7 @@ function computeScores() {
   if (elements.heartbeatTick) elements.heartbeatTick.textContent = String(state.tick);
   if (elements.memorySync) elements.memorySync.textContent = `${Math.round(memoryScore)}%`;
   if (elements.sandboxRisk) elements.sandboxRisk.textContent = `${mission.policyRisk}%`;
-  localStorage.setItem("hermes-openclaw-mission", mission.mission);
+  safeWriteStorage(missionStorageKey, mission.mission);
 }
 
 function buildPlan(status = "draft", checks = []) {
@@ -551,12 +576,46 @@ function exportRun() {
     .catch(() => showToast("Execution JSON is visible in the console panel."));
 }
 
+function downloadRun() {
+  const plan = validatePlan();
+  const blob = new Blob([JSON.stringify(plan, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `hermes-openclaw-run-${state.cycle}.json`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  addEvent("success", "Runtime", "Execution JSON downloaded.");
+  renderEvents();
+  saveState();
+}
+
 function clearHistory() {
   state.history = [];
   addEvent("info", "Runtime", "Run history cleared.");
   renderHistory();
   renderEvents();
   saveState();
+}
+
+function resetRuntime() {
+  window.clearInterval(heartbeatTimer);
+  heartbeatTimer = null;
+  state = structuredClone(defaultState);
+  safeRemoveStorage(storageKey);
+  safeRemoveStorage(missionStorageKey);
+  if (elements.missionInput) {
+    elements.missionInput.value =
+      "Design a self-learning market-intelligence workflow that extracts signal, verifies claims, generates reusable skills, and schedules deterministic follow-up tasks.";
+  }
+  state.latestPlan = buildPlan("ready");
+  const heartbeatButton = $("[data-heartbeat-toggle]");
+  if (heartbeatButton) heartbeatButton.textContent = "Start heartbeat";
+  updateSkillPreview();
+  renderAll();
+  showToast("Runtime reset to a clean baseline.");
 }
 
 function activateNavForSection(id) {
@@ -602,6 +661,8 @@ function bindEvents() {
   $("[data-validate-plan]")?.addEventListener("click", validatePlan);
   $("[data-clear-history]")?.addEventListener("click", clearHistory);
   $$("[data-export-run]").forEach((button) => button.addEventListener("click", exportRun));
+  $("[data-download-run]")?.addEventListener("click", downloadRun);
+  $("[data-reset-runtime]")?.addEventListener("click", resetRuntime);
   $("[data-heartbeat-step]")?.addEventListener("click", () => heartbeatTick("manual"));
   $("[data-heartbeat-toggle]")?.addEventListener("click", () => setHeartbeatRunning(!state.heartbeatRunning));
 
@@ -654,7 +715,7 @@ function bindEvents() {
 }
 
 function init() {
-  const savedMission = localStorage.getItem("hermes-openclaw-mission");
+  const savedMission = safeReadStorage(missionStorageKey);
   if (savedMission && elements.missionInput) elements.missionInput.value = savedMission;
   bindEvents();
   state.latestPlan = state.latestPlan || buildPlan("ready");

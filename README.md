@@ -40,6 +40,9 @@ autonomous-symbiosis-platform/
   styles.css
   main.js
   README.md
+  package.json
+  qa-static-check.mjs
+  .nojekyll
   assets/
     synergistic_architecture.png
     synaptic_bridge.png
@@ -103,10 +106,18 @@ Run the bundled static QA check from the repository root:
 node qa-static-check.mjs
 ```
 
+Or use the npm scripts:
+
+```bash
+npm run qa
+npm run check
+```
+
 The check verifies:
 
 - Required files exist.
 - Required visual assets exist.
+- Repository metadata files exist.
 - Core HTML sections and dynamic controls are present.
 - `main.js` passes JavaScript syntax validation.
 
@@ -132,6 +143,8 @@ Use:
 - **Run synthesis** to simulate a runtime pass.
 - **Inspect verifier** to jump to the verifier and rollback command center.
 - **Export run** to copy or expose the latest structured execution JSON.
+- **Download run JSON** in the workbench to save the current execution envelope.
+- **Reset runtime** to return the simulator to a clean baseline.
 - **Start heartbeat** in the workbench to run the autonomous loop.
 
 ### 2. Routing Workbench
@@ -179,6 +192,8 @@ Use:
 - **Start heartbeat** to begin an autonomous tick every few seconds.
 - **Pause heartbeat** to stop the loop.
 - **Single tick** to advance the runtime once.
+- **Download run JSON** to save the current execution envelope.
+- **Reset runtime** to clear persisted state and restore the default mission.
 
 Each tick can:
 
@@ -326,11 +341,12 @@ This app is intentionally simple to run:
 - Plain CSS.
 - Plain JavaScript.
 - No bundler.
-- No package manager.
+- No runtime package dependencies.
 - No backend.
 - No network dependency.
 - Dynamic behavior is local to the browser.
 - Persistent session state uses `localStorage`.
+- Optional `npm` scripts are included for QA only; the app itself has no runtime package dependencies.
 
 That makes it easy to publish with:
 
@@ -400,6 +416,17 @@ Provides dependency-free static quality checks:
 - Confirms core dynamic UI markers exist.
 - Runs JavaScript syntax validation.
 
+### `package.json`
+
+Defines convenience scripts only:
+
+- `npm run qa` runs the static quality gate.
+- `npm run check` validates JavaScript syntax and then runs the quality gate.
+
+### `.nojekyll`
+
+Keeps GitHub Pages from applying Jekyll processing to the static app.
+
 ## State Persistence
 
 The app writes runtime state to browser `localStorage` under:
@@ -414,7 +441,7 @@ It also stores the latest mission text under:
 hermes-openclaw-mission
 ```
 
-To reset the simulation, clear site data for the local file in your browser, or run this in the browser console:
+To reset the simulation, use **Reset runtime** in the workbench, clear site data for the local file in your browser, or run this in the browser console:
 
 ```js
 localStorage.removeItem("hermes-openclaw-runtime-state-v2");
@@ -432,13 +459,15 @@ The current prototype includes these user-facing workflows:
 4. **Stage inspection:** click each pipeline stage to inspect runtime responsibilities.
 5. **Envelope validation:** check intent specificity, sandbox posture, rigor threshold, and autonomy balance.
 6. **Structured export:** produce and copy execution JSON.
-7. **Heartbeat automation:** run the autonomous tick loop or step it manually.
-8. **Actuation queue:** observe atomic local work move from queued to running to complete.
-9. **Live telemetry:** watch scores, memory sync, queue depth, and sandbox risk shift.
-10. **Skill evolution:** generate SKILL.md candidates and preview their content.
-11. **Sandbox policy simulation:** toggle defensive controls and observe risk.
-12. **Verifier rollback:** restore the last sandbox checkpoint.
-13. **Source review:** inspect the attached architecture visuals.
+7. **Run download:** save the current execution envelope as JSON.
+8. **Runtime reset:** clear persisted state and restore the default mission.
+9. **Heartbeat automation:** run the autonomous tick loop or step it manually.
+10. **Actuation queue:** observe atomic local work move from queued to running to complete.
+11. **Live telemetry:** watch scores, memory sync, queue depth, and sandbox risk shift.
+12. **Skill evolution:** generate SKILL.md candidates and preview their content.
+13. **Sandbox policy simulation:** toggle defensive controls and observe risk.
+14. **Verifier rollback:** restore the last sandbox checkpoint.
+15. **Source review:** inspect the attached architecture visuals.
 
 ## Error Handling and Safety Behavior
 
@@ -448,6 +477,7 @@ The app avoids executing real local commands. Safety behavior is simulated but s
 - Missing DOM elements are guarded with safe lookups.
 - Mission text persists in `localStorage`.
 - Runtime queue, events, skills, history, and counters persist in `localStorage`.
+- Storage access is guarded so restricted browser modes fail softly.
 - Clipboard export falls back to the visible console if browser permissions block copying.
 - Validation highlights weak execution envelopes before actuation.
 - Sandbox risk increases if defensive toggles are disabled.

@@ -1,0 +1,11 @@
+{
+  "name": "autonomous-symbiosis-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dynamic Hermes-OpenClaw Synergistic Agentic Runtime simulator.",
+  "type": "module",
+  "scripts": {
+    "qa": "node qa-static-check.mjs",
+    "check": "node --check main.js && node qa-static-check.mjs"
+  }
+}
