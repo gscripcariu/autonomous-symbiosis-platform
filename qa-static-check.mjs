@@ -15,9 +15,15 @@ const requiredHtml = [
   "Security and isolation matrix",
   "Structured execution plan",
   "Sandbox policy simulator",
+  "OpenClaw actuation queue",
+  "Live event stream",
+  "Generated SKILL.md preview",
+  "Run history",
   "data-run-synthesis",
   "data-validate-plan",
   "data-export-run",
+  "data-heartbeat-toggle",
+  "data-heartbeat-step",
 ];
 
 async function assertFile(path) {

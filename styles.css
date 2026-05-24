@@ -454,7 +454,8 @@ button svg {
   transform: rotate(-16deg);
 }
 
-.hero-metrics {
+.hero-metrics,
+.live-runtime {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -462,6 +463,7 @@ button svg {
 }
 
 .hero-metrics article,
+.live-runtime article,
 .command-panel,
 .reactor-panel,
 .routing-panel,
@@ -475,11 +477,13 @@ button svg {
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
 }
 
-.hero-metrics article {
+.hero-metrics article,
+.live-runtime article {
   padding: 18px;
 }
 
 .hero-metrics span,
+.live-runtime span,
 .panel-title span,
 label,
 .pipeline-node span,
@@ -493,11 +497,17 @@ label,
   text-transform: uppercase;
 }
 
-.hero-metrics strong {
+.hero-metrics strong,
+.live-runtime strong {
   display: block;
   margin-top: 8px;
   color: var(--green);
   font-size: 24px;
+}
+
+.live-runtime {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: -16px;
 }
 
 .workbench,
@@ -602,6 +612,22 @@ textarea {
   color: var(--text);
 }
 
+.heartbeat-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.heartbeat-controls button {
+  min-height: 40px;
+  border: 1px solid rgba(84, 255, 159, 0.28);
+  background: rgba(84, 255, 159, 0.07);
+  color: #d6ffe6;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 textarea:focus,
 input[type="range"]:focus-visible,
 button:focus-visible,
@@ -670,20 +696,42 @@ input[type="range"] {
 .agent-list,
 .skill-table,
 .ledger-list,
-.timeline {
+.timeline,
+.queue-list,
+.event-list,
+.history-list {
   display: grid;
   gap: 10px;
 }
 
 .output-console,
-.policy-board {
+.policy-board,
+.actuation-queue,
+.event-stream,
+.skill-preview,
+.run-history {
   margin-top: 18px;
   border: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(13, 27, 45, 0.86), rgba(5, 12, 22, 0.72));
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
 }
 
-.output-console pre {
+.dynamic-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1.05fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.actuation-queue,
+.event-stream,
+.skill-preview,
+.run-history {
+  padding: 20px;
+}
+
+.output-console pre,
+.skill-preview pre {
   max-height: 360px;
   overflow: auto;
   margin: 0;
@@ -695,6 +743,52 @@ input[type="range"] {
   font-size: 12px;
   line-height: 1.55;
   white-space: pre-wrap;
+}
+
+.queue-row,
+.event-row,
+.history-row {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.queue-top,
+.event-top,
+.history-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.queue-row strong,
+.event-row strong,
+.history-row strong {
+  font-size: 13px;
+}
+
+.event-row span,
+.queue-row span,
+.history-row span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.event-row[data-kind="error"] {
+  border-color: rgba(255, 100, 124, 0.35);
+  background: rgba(255, 100, 124, 0.07);
+}
+
+.event-row[data-kind="success"] {
+  border-color: rgba(84, 255, 159, 0.28);
+  background: rgba(84, 255, 159, 0.06);
+}
+
+.queue-row[data-status="running"] {
+  border-color: rgba(255, 188, 78, 0.38);
 }
 
 .architecture-stack {
@@ -1150,6 +1244,7 @@ input[type="range"] {
   }
 
   .hero-metrics,
+  .live-runtime,
   .section-heading,
   .ops-grid,
   .pipeline,
@@ -1157,7 +1252,12 @@ input[type="range"] {
   .lifecycle-board,
   .matrix-row,
   .performance-grid,
-  .policy-controls {
+  .policy-controls,
+  .dynamic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .heartbeat-controls {
     grid-template-columns: 1fr;
   }
 

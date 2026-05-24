@@ -125,6 +125,25 @@
               <strong id="driftMetric">0.00%</strong>
             </article>
           </div>
+
+          <div class="live-runtime" aria-label="Live runtime telemetry">
+            <article>
+              <span>Heartbeat tick</span>
+              <strong id="heartbeatTick">0</strong>
+            </article>
+            <article>
+              <span>Queue depth</span>
+              <strong id="queueDepth">0</strong>
+            </article>
+            <article>
+              <span>Memory sync</span>
+              <strong id="memorySync">96%</strong>
+            </article>
+            <article>
+              <span>Sandbox risk</span>
+              <strong id="sandboxRisk">12%</strong>
+            </article>
+          </div>
         </section>
 
         <section class="workbench" id="routing">
@@ -169,6 +188,10 @@
                 </svg>
                 Validate execution envelope
               </button>
+              <div class="heartbeat-controls" aria-label="Heartbeat loop controls">
+                <button type="button" data-heartbeat-toggle>Start heartbeat</button>
+                <button type="button" data-heartbeat-step>Single tick</button>
+              </div>
             </section>
 
             <section class="reactor-panel" aria-label="Synthesis reactor">
@@ -205,6 +228,24 @@
                 <span>4 agents</span>
               </div>
               <div class="agent-list" id="agentList"></div>
+            </section>
+          </div>
+
+          <div class="dynamic-grid">
+            <section class="actuation-queue" aria-label="OpenClaw actuation queue">
+              <div class="panel-title">
+                <h3>OpenClaw actuation queue</h3>
+                <span id="queueState">idle</span>
+              </div>
+              <div class="queue-list" id="queueList"></div>
+            </section>
+
+            <section class="event-stream" aria-label="Live event stream">
+              <div class="panel-title">
+                <h3>Live event stream</h3>
+                <span id="eventCount">0 events</span>
+              </div>
+              <div class="event-list" id="eventList"></div>
             </section>
           </div>
 
@@ -314,6 +355,21 @@
             </div>
             <div class="skill-table" id="skillTable"></div>
           </div>
+
+          <div class="skill-preview" aria-label="Generated SKILL.md preview">
+            <div class="panel-title">
+              <h3>Generated SKILL.md preview</h3>
+              <span id="skillPreviewState">ready</span>
+            </div>
+            <pre id="skillPreview">---
+name: heartbeat-gateway-tick
+description: Poll workspace drift and report structured deltas to HEL.
+---
+
+# Heartbeat Gateway Tick
+
+Run a sandboxed OpenClaw heartbeat and return only verified state deltas.</pre>
+          </div>
         </section>
 
         <section class="security-zone" id="security">
@@ -419,6 +475,14 @@
               </div>
               <img class="source-preview" id="sourcePreview" src="./assets/synergistic_architecture.png" alt="Selected source architecture visual" />
             </div>
+          </div>
+
+          <div class="run-history" aria-label="Run history">
+            <div class="panel-title">
+              <h3>Run history</h3>
+              <button class="ghost-button" data-clear-history>Clear</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
           </div>
         </section>
       </main>

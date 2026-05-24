@@ -14,6 +14,9 @@ The platform models an asymmetric agent runtime:
 - **Verifier and rollback controls** keep execution accountable, constrained, and reversible.
 - **Sandbox policy simulator** shows how identity, isolation, filesystem allowlists, and goal shielding affect risk.
 - **Structured execution console** emits a readable HEL -> CIB -> OAL execution envelope.
+- **Heartbeat loop** continuously mutates runtime telemetry, queue state, events, skills, and verifier history.
+- **OpenClaw actuation queue** turns mission routing into visible atomic work.
+- **Live event stream** records pipeline inspection, validation, queue completion, policy changes, rollback, and heartbeat activity.
 
 The guiding principle is:
 
@@ -107,6 +110,7 @@ Use:
 - **Run synthesis** to simulate a runtime pass.
 - **Inspect verifier** to jump to the verifier and rollback command center.
 - **Export run** to copy or expose the latest structured execution JSON.
+- **Start heartbeat** in the workbench to run the autonomous loop.
 
 ### 2. Routing Workbench
 
@@ -121,6 +125,8 @@ You can:
 5. Route the mission through the synthesis core.
 6. Validate the execution envelope.
 7. Click pipeline stages to inspect what each stage does.
+8. Watch the OpenClaw actuation queue process atomic work.
+9. Read the live event stream as the runtime changes.
 
 The four modeled stages are:
 
@@ -138,6 +144,29 @@ The structured execution console produces JSON containing:
 - CIB translation and memory bridge details.
 - OAL gateway, sandbox, and heartbeat settings.
 - Verifier scores, drift, and validation checks.
+- Current OAL queue state.
+- Active HEL agent loads.
+- Latest CIB-generated skill.
+
+### Dynamic Heartbeat Loop
+
+The heartbeat loop is the main dynamic behavior in the app.
+
+Use:
+
+- **Start heartbeat** to begin an autonomous tick every few seconds.
+- **Pause heartbeat** to stop the loop.
+- **Single tick** to advance the runtime once.
+
+Each tick can:
+
+- Increment heartbeat and cycle counters.
+- Enqueue or advance OAL tasks.
+- Complete queued work and emit structured events.
+- Change HEL/CIB/OAL load levels.
+- Update memory sync, sandbox risk, drift, and synthesis score.
+- Generate a new SKILL.md preview every few ticks.
+- Add verifier timeline entries.
 
 ### 3. Runtime Architecture
 
@@ -189,6 +218,8 @@ The modeled flow:
 
 Use **Generate skill** to simulate creating a new OpenClaw-compatible skill from a Hermes-generated function.
 
+The **Generated SKILL.md preview** updates dynamically when skills are generated. It includes YAML frontmatter, execution contract notes, sandbox requirements, and verifier thresholds based on the current mission.
+
 ### 5. Security Matrix
 
 The security section maps risks to mitigations.
@@ -218,8 +249,11 @@ The verifier section contains:
 - Checkpoint timeline.
 - Rollback control.
 - Source architecture preview board.
+- Run history.
 
 Use **Rollback** to simulate restoring the OAL sandbox to the last verified checkpoint.
+
+The run history updates when you route, validate, or roll back a run. It records score, drift, status, and timestamp.
 
 ## Architecture Summary
 
@@ -312,6 +346,10 @@ Provides local interactivity:
 - Dynamic score computation.
 - Pipeline stage switching.
 - Skill generation simulation.
+- Live heartbeat simulation.
+- OAL queue processing.
+- Live event stream.
+- Run history.
 - Rollback simulation.
 - Source visual switching.
 - Navigation active states.
@@ -320,6 +358,7 @@ Provides local interactivity:
 - Structured JSON export.
 - Sandbox policy risk scoring.
 - Local mission persistence.
+- Runtime state persistence.
 - HTML escaping for rendered dynamic data.
 
 ### `qa-static-check.mjs`
@@ -340,10 +379,13 @@ The current prototype includes these user-facing workflows:
 4. **Stage inspection:** click each pipeline stage to inspect runtime responsibilities.
 5. **Envelope validation:** check intent specificity, sandbox posture, rigor threshold, and autonomy balance.
 6. **Structured export:** produce and copy execution JSON.
-7. **Skill evolution:** generate SKILL.md candidates.
-8. **Sandbox policy simulation:** toggle defensive controls and observe risk.
-9. **Verifier rollback:** restore the last sandbox checkpoint.
-10. **Source review:** inspect the attached architecture visuals.
+7. **Heartbeat automation:** run the autonomous tick loop or step it manually.
+8. **Actuation queue:** observe atomic local work move from queued to running to complete.
+9. **Live telemetry:** watch scores, memory sync, queue depth, and sandbox risk shift.
+10. **Skill evolution:** generate SKILL.md candidates and preview their content.
+11. **Sandbox policy simulation:** toggle defensive controls and observe risk.
+12. **Verifier rollback:** restore the last sandbox checkpoint.
+13. **Source review:** inspect the attached architecture visuals.
 
 ## Error Handling and Safety Behavior
 
@@ -352,6 +394,7 @@ The app avoids executing real local commands. Safety behavior is simulated but s
 - Dynamic HTML rows are escaped before rendering.
 - Missing DOM elements are guarded with safe lookups.
 - Mission text persists in `localStorage`.
+- Runtime queue, events, skills, history, and counters persist in `localStorage`.
 - Clipboard export falls back to the visible console if browser permissions block copying.
 - Validation highlights weak execution envelopes before actuation.
 - Sandbox risk increases if defensive toggles are disabled.
