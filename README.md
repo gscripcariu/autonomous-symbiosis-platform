@@ -2,7 +2,7 @@
 
 An interactive framework app for the **Hermes-OpenClaw Synergistic Agentic Runtime**: a dual-engine agent architecture where **Hermes** acts as the metacognitive executive layer and **OpenClaw** acts as the bare-metal actuator layer.
 
-The app is a static, browser-ready cockpit that turns the supplied architecture visuals and technical specification into a usable product surface: runtime overview, mission routing, skill translation, security isolation, verifier feedback, rollback checkpoints, and source architecture previews.
+The app is a dynamic, browser-ready runtime simulator that turns the supplied architecture visuals and technical specification into a usable product surface: runtime overview, mission routing, skill translation, security isolation, verifier feedback, rollback checkpoints, live queue processing, heartbeat events, generated skill previews, and source architecture previews.
 
 ## What This App Shows
 
@@ -30,7 +30,7 @@ Open this file in a browser:
 index.html
 ```
 
-No build step, package install, local server, or environment variable is required.
+No build step, package install, local server, backend, API key, or environment variable is required.
 
 ## Folder Structure
 
@@ -73,6 +73,28 @@ autonomous-symbiosis-platform/
    - Security
    - Verifier
 
+## Dynamic Runtime Model
+
+This is no longer a static UI mockup. The app runs a client-side simulation loop in `main.js`.
+
+Runtime state includes:
+
+- Heartbeat tick count.
+- HEL/CIB/OAL agent load levels.
+- OpenClaw actuation queue.
+- Live event stream.
+- Generated skill registry.
+- Generated `SKILL.md` preview.
+- Ground-truth ledger.
+- Checkpoint timeline.
+- Run history.
+- Structured execution JSON.
+- Sandbox policy risk.
+
+The state is stored in `localStorage`, so refreshes preserve the current runtime session.
+
+The simulator does not call external services and does not execute shell, browser, or filesystem commands. It models the orchestration contract safely inside the browser.
+
 ## Quality Check
 
 Run the bundled static QA check from the repository root:
@@ -85,7 +107,7 @@ The check verifies:
 
 - Required files exist.
 - Required visual assets exist.
-- Core HTML sections and controls are present.
+- Core HTML sections and dynamic controls are present.
 - `main.js` passes JavaScript syntax validation.
 
 Expected output:
@@ -167,6 +189,8 @@ Each tick can:
 - Update memory sync, sandbox risk, drift, and synthesis score.
 - Generate a new SKILL.md preview every few ticks.
 - Add verifier timeline entries.
+
+The heartbeat loop is intentionally fast in the browser so you can see the architecture move. In a real runtime, this would map to a slower `HEARTBEAT.md` or cron cadence, such as every 15 minutes.
 
 ### 3. Runtime Architecture
 
@@ -305,6 +329,8 @@ This app is intentionally simple to run:
 - No package manager.
 - No backend.
 - No network dependency.
+- Dynamic behavior is local to the browser.
+- Persistent session state uses `localStorage`.
 
 That makes it easy to publish with:
 
@@ -326,6 +352,11 @@ Defines the app structure:
 - Skill registry.
 - Security matrix.
 - Verifier and source board.
+- Dynamic telemetry.
+- Actuation queue.
+- Event stream.
+- Generated skill preview.
+- Run history.
 
 ### `styles.css`
 
@@ -366,8 +397,30 @@ Provides local interactivity:
 Provides dependency-free static quality checks:
 
 - Confirms files and assets are present.
-- Confirms core UI markers exist.
+- Confirms core dynamic UI markers exist.
 - Runs JavaScript syntax validation.
+
+## State Persistence
+
+The app writes runtime state to browser `localStorage` under:
+
+```text
+hermes-openclaw-runtime-state-v2
+```
+
+It also stores the latest mission text under:
+
+```text
+hermes-openclaw-mission
+```
+
+To reset the simulation, clear site data for the local file in your browser, or run this in the browser console:
+
+```js
+localStorage.removeItem("hermes-openclaw-runtime-state-v2");
+localStorage.removeItem("hermes-openclaw-mission");
+location.reload();
+```
 
 ## UX and Interaction Inventory
 
@@ -416,10 +469,10 @@ After this folder is pushed to GitHub:
    https://<your-github-username>.github.io/<repository-name>/autonomous-symbiosis-platform/
    ```
 
-For this repository, the likely GitHub Pages URL will be:
+For this standalone repository, the GitHub Pages URL will be:
 
 ```text
-https://gscripcariu.github.io/hunter-ma-platform/autonomous-symbiosis-platform/
+https://gscripcariu.github.io/autonomous-symbiosis-platform/
 ```
 
 That URL will work after GitHub Pages is enabled for the repository and branch.
@@ -437,7 +490,9 @@ This app is currently a polished framework prototype. A production runtime could
 7. WSL2 or Docker execution policy controls.
 8. Identity tiers and pairing codes.
 9. Audit logs for every tool call.
-10. Live HEARTBEAT tick monitoring.
+10. Real HEARTBEAT tick monitoring.
+11. WebSocket or SSE event streaming.
+12. Downloadable run artifacts and audit bundles.
 
 ## Security Disclaimer
 
