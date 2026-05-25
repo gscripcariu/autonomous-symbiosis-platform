@@ -188,6 +188,14 @@
                 </svg>
                 Validate execution envelope
               </button>
+              <button class="wide-action cathedral-action" data-ralph-loop>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3l7 6v10H5V9l7-6z"></path>
+                  <path d="M9 19v-7h6v7"></path>
+                  <path d="M8 9h8"></path>
+                </svg>
+                Ralph-loop audit
+              </button>
               <div class="heartbeat-controls" aria-label="Heartbeat loop controls">
                 <button type="button" data-heartbeat-toggle>Start heartbeat</button>
                 <button type="button" data-heartbeat-step>Single tick</button>
@@ -261,6 +269,24 @@
   "next": "Run synthesis to generate HEL -> CIB -> OAL execution JSON"
 }</pre>
           </div>
+
+          <section class="cathedral-panel" aria-label="Cathedral of Mind audit">
+            <div class="cathedral-header">
+              <div>
+                <h3>Cathedral of Mind audit</h3>
+                <p>Recursive product, safety, runtime, and documentation review for the current mission envelope.</p>
+              </div>
+              <div class="cathedral-score">
+                <span id="cathedralState">ready</span>
+                <strong id="cathedralScore">0%</strong>
+              </div>
+            </div>
+            <div class="audit-grid" id="auditGrid"></div>
+            <div class="recommendation-panel">
+              <h4>Next refinements</h4>
+              <div id="recommendationList"></div>
+            </div>
+          </section>
         </section>
 
         <section class="architecture-zone" id="architecture">

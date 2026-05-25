@@ -21,8 +21,10 @@ const requiredHtml = [
   "Live event stream",
   "Generated SKILL.md preview",
   "Run history",
+  "Cathedral of Mind audit",
   "data-run-synthesis",
   "data-validate-plan",
+  "data-ralph-loop",
   "data-export-run",
   "data-heartbeat-toggle",
   "data-heartbeat-step",
@@ -52,9 +54,16 @@ for (const file of requiredFiles) {
 }
 
 const html = await readFile("index.html", "utf8");
+const script = await readFile("main.js", "utf8");
 for (const marker of requiredHtml) {
   if (!html.includes(marker)) {
     throw new Error(`Missing required HTML marker: ${marker}`);
+  }
+}
+
+for (const marker of ["getAuditSnapshot", "renderAudit", "runRalphLoop", "cathedralAudit"]) {
+  if (!script.includes(marker)) {
+    throw new Error(`Missing required runtime marker: ${marker}`);
   }
 }
 

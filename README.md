@@ -4,6 +4,8 @@ An interactive framework app for the **Hermes-OpenClaw Synergistic Agentic Runti
 
 The app is a dynamic, browser-ready runtime simulator that turns the supplied architecture visuals and technical specification into a usable product surface: runtime overview, mission routing, skill translation, security isolation, verifier feedback, rollback checkpoints, live queue processing, heartbeat events, generated skill previews, and source architecture previews.
 
+The latest pass adds a **Cathedral of Mind / Ralph-loop audit**: a recursive quality layer that scores the current mission envelope across intent architecture, verifier rigor, actuation safety, skill evolution, operational liveness, and documentation clarity.
+
 ## What This App Shows
 
 The platform models an asymmetric agent runtime:
@@ -17,6 +19,7 @@ The platform models an asymmetric agent runtime:
 - **Heartbeat loop** continuously mutates runtime telemetry, queue state, events, skills, and verifier history.
 - **OpenClaw actuation queue** turns mission routing into visible atomic work.
 - **Live event stream** records pipeline inspection, validation, queue completion, policy changes, rollback, and heartbeat activity.
+- **Cathedral of Mind audit** reviews the whole prototype as a system and writes its score into the structured run envelope.
 
 The guiding principle is:
 
@@ -93,6 +96,7 @@ Runtime state includes:
 - Run history.
 - Structured execution JSON.
 - Sandbox policy risk.
+- Cathedral audit dimensions and recommendations.
 
 The state is stored in `localStorage`, so refreshes preserve the current runtime session.
 
@@ -119,6 +123,7 @@ The check verifies:
 - Required visual assets exist.
 - Repository metadata files exist.
 - Core HTML sections and dynamic controls are present.
+- Cathedral audit runtime markers are present.
 - `main.js` passes JavaScript syntax validation.
 
 Expected output:
@@ -146,6 +151,7 @@ Use:
 - **Download run JSON** in the workbench to save the current execution envelope.
 - **Reset runtime** to return the simulator to a clean baseline.
 - **Start heartbeat** in the workbench to run the autonomous loop.
+- **Ralph-loop audit** in the workbench to run a recursive quality pass.
 
 ### 2. Routing Workbench
 
@@ -159,9 +165,10 @@ You can:
 4. Adjust rigor.
 5. Route the mission through the synthesis core.
 6. Validate the execution envelope.
-7. Click pipeline stages to inspect what each stage does.
-8. Watch the OpenClaw actuation queue process atomic work.
-9. Read the live event stream as the runtime changes.
+7. Run the Ralph-loop audit.
+8. Click pipeline stages to inspect what each stage does.
+9. Watch the OpenClaw actuation queue process atomic work.
+10. Read the live event stream as the runtime changes.
 
 The four modeled stages are:
 
@@ -182,6 +189,31 @@ The structured execution console produces JSON containing:
 - Current OAL queue state.
 - Active HEL agent loads.
 - Latest CIB-generated skill.
+- Cathedral audit score, dimensions, and recommendations.
+
+### Cathedral of Mind / Ralph-Loop Audit
+
+The **Ralph-loop audit** is a simulated recursive quality review. It asks whether the current mission envelope is not only functional, but coherent as a whole system.
+
+It scores six dimensions:
+
+- **Intent architecture:** mission specificity and executive routing clarity.
+- **Verifier rigor:** evidence quality, drift budget, and rollback readiness.
+- **Actuation safety:** identity, sandbox, allowlist, and strategic shielding posture.
+- **Skill evolution:** reusable SKILL.md generation and validation readiness.
+- **Operational liveness:** heartbeat, queue, events, telemetry, and run history.
+- **Documentation clarity:** README, QA scripts, deployment notes, and safety boundaries.
+
+When you click **Ralph-loop audit**, the app:
+
+1. Raises verifier rigor toward a safer high-rigor operating posture.
+2. Keeps autonomy inside a stronger validated range.
+3. Seeds an OAL queue if no live work is visible.
+4. Generates a skill candidate if the self-evolution loop has not been exercised.
+5. Writes the audit result into the structured execution JSON under `cathedralAudit`.
+6. Adds a run-history entry and event-stream entry.
+
+The audit is intentionally local and simulated. It does not execute external code, but it gives the prototype a visible self-review loop that maps cleanly to a future production quality gate.
 
 ### Dynamic Heartbeat Loop
 
@@ -371,6 +403,7 @@ Defines the app structure:
 - Dynamic telemetry.
 - Actuation queue.
 - Event stream.
+- Cathedral of Mind audit.
 - Generated skill preview.
 - Run history.
 
@@ -402,6 +435,7 @@ Provides local interactivity:
 - Navigation active states.
 - Mission presets.
 - Execution-envelope validation.
+- Ralph-loop / Cathedral audit scoring.
 - Structured JSON export.
 - Sandbox policy risk scoring.
 - Local mission persistence.
@@ -460,14 +494,15 @@ The current prototype includes these user-facing workflows:
 5. **Envelope validation:** check intent specificity, sandbox posture, rigor threshold, and autonomy balance.
 6. **Structured export:** produce and copy execution JSON.
 7. **Run download:** save the current execution envelope as JSON.
-8. **Runtime reset:** clear persisted state and restore the default mission.
-9. **Heartbeat automation:** run the autonomous tick loop or step it manually.
-10. **Actuation queue:** observe atomic local work move from queued to running to complete.
-11. **Live telemetry:** watch scores, memory sync, queue depth, and sandbox risk shift.
-12. **Skill evolution:** generate SKILL.md candidates and preview their content.
-13. **Sandbox policy simulation:** toggle defensive controls and observe risk.
-14. **Verifier rollback:** restore the last sandbox checkpoint.
-15. **Source review:** inspect the attached architecture visuals.
+8. **Cathedral audit:** recursively review quality, safety, liveness, skills, and docs.
+9. **Runtime reset:** clear persisted state and restore the default mission.
+10. **Heartbeat automation:** run the autonomous tick loop or step it manually.
+11. **Actuation queue:** observe atomic local work move from queued to running to complete.
+12. **Live telemetry:** watch scores, memory sync, queue depth, and sandbox risk shift.
+13. **Skill evolution:** generate SKILL.md candidates and preview their content.
+14. **Sandbox policy simulation:** toggle defensive controls and observe risk.
+15. **Verifier rollback:** restore the last sandbox checkpoint.
+16. **Source review:** inspect the attached architecture visuals.
 
 ## Error Handling and Safety Behavior
 
@@ -481,6 +516,7 @@ The app avoids executing real local commands. Safety behavior is simulated but s
 - Clipboard export falls back to the visible console if browser permissions block copying.
 - Validation highlights weak execution envelopes before actuation.
 - Sandbox risk increases if defensive toggles are disabled.
+- Ralph-loop audit recommendations stay advisory and never execute local commands.
 
 ## Publishing With GitHub Pages
 
@@ -523,6 +559,7 @@ This app is currently a polished framework prototype. A production runtime could
 10. Real HEARTBEAT tick monitoring.
 11. WebSocket or SSE event streaming.
 12. Downloadable run artifacts and audit bundles.
+13. A real production Ralph-loop gate that runs linting, browser tests, accessibility audits, policy checks, and documentation drift checks before allowing autonomous execution.
 
 ## Security Disclaimer
 
